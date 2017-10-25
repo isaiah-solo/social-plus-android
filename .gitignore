@@ -1,3 +1,7 @@
+# Custom files
+app/src/main/java/me/zayz/socialplus/Config.java
+app/src/main/java/me/zayz/socialplus/config/Config.java
+
 # Built application files
 *.apk
 *.ap_

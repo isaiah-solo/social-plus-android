@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2c2c2c</color>
+    <color name="colorPrimaryDark">#202020</color>
+    <color name="colorBackground">#202020</color>
+    <color name="colorText">@android:color/white</color>
+    <color name="colorFadedText">#959595</color>
+    <color name="colorAccent">#05b1d1</color>
+    <color name="colorPositive">#32CD32</color>
+    <color name="colorNegative">#DD0048</color>
+    <color name="colorNeutral">#959595</color>
+</resources>

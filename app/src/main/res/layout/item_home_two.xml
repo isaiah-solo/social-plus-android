@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/colorText"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/item_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/item_title"
+            android:layout_alignStart="@+id/item_title"
+            android:layout_below="@+id/item_title"
+            android:layout_marginTop="4dp"
+            android:text="@string/item_followings_new"
+            android:textColor="@color/colorText"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/item_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_title"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@+id/item_new"
+            android:layout_toRightOf="@+id/item_new"
+            android:text="@string/item_followings_total"
+            android:textColor="@color/colorText"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/item_new_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/item_new"
+            android:layout_alignStart="@+id/item_new"
+            android:layout_below="@+id/item_new"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorText" />
+
+        <TextView
+            android:id="@+id/item_total_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/item_total"
+            android:layout_alignStart="@+id/item_total"
+            android:layout_below="@+id/item_total"
+            android:layout_marginTop="0dp"
+            android:textColor="@color/colorText" />
+
+        <ImageView
+            android:id="@+id/item_new_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/item_content_description" />
+
+        <ImageView
+            android:id="@+id/item_total_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/item_content_description" />
+    </RelativeLayout>
+</layout>

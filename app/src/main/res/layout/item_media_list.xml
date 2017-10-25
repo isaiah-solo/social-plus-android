@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="me.zayz.socialplus.models.InstagramMedia" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackground"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/media"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:contentDescription="@string/item_content_description"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@android:color/white" />
+
+        <TextView
+            android:id="@+id/likes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/media"
+            android:layout_toEndOf="@+id/media"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:text='@{String.valueOf(item.likesCount) + " likes"}'
+            android:textColor="@color/colorText"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/likes"
+            android:layout_alignStart="@+id/likes"
+            android:layout_below="@+id/likes"
+            android:text='@{String.valueOf(item.commentsCount) + " comments"}'
+            android:textColor="@color/colorText"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/comments"
+            android:layout_alignStart="@+id/comments"
+            android:layout_below="@+id/comments"
+            android:text='@{item.getLineTags()}'
+            android:textColor="@color/colorFadedText"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+</layout>

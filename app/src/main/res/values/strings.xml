@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Social Plus</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_engagement">Engagement</string>
+
+    <string name="instagram_login">Login with Instagram</string>
+
+    <string name="item_followings_unfollowers">Unfollowers</string>
+    <string name="item_followings_followers">Followers</string>
+    <string name="item_followings_not_following_me">Idols</string>
+    <string name="item_followings_im_not_following_back">Fans</string>
+    <string name="item_followings_mutual">Mutual</string>
+    <string name="item_followings_blocked">Blocked</string>
+
+    <string name="item_engagement_best_photo">Best Photos</string>
+    <string name="item_engagement_best_video">Best Videos</string>
+    <string name="item_engagement_ghost_followers">Ghost Followers</string>
+    <string name="item_engagement_least_comments">Least Commented Posts</string>
+    <string name="item_engagement_photo_engagement_week">Photo Engagement Week</string>
+    <string name="item_engagement_photo_engagement_month">Photo Engagement Month</string>
+    <string name="item_engagement_photo_engagement_total">Photo Engagement Total</string>
+    <string name="item_engagement_video_engagement_week">Video Engagement Week</string>
+    <string name="item_engagement_video_engagement_month">Video Engagement Month</string>
+    <string name="item_engagement_video_engagement_total">Video Engagement Total</string>
+
+    <string name="item_followings_new">New</string>
+    <string name="item_followings_total">Total</string>
+
+    <string name="item_content_description">List Item</string>
+
+</resources>
