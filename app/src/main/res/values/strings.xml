@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Social Plus</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="instagram_login">Login with Instagram</string>
+    <string name="instagram_preferences">instagram_preferences</string>
+
+    <string name="user_id">user_id</string>
+    <string name="user_username">username</string>
+    <string name="user_full_name">user_full_name</string>
+    <string name="user_profile_picture">user_profile_picture</string>
+
+    <string name="auth_code_url">https://api.instagram.com/oauth/authorize/?client_id=2b35a81d617a4e64b9a2ed14792c38ab&amp;redirect_uri=https://zayz.me&amp;response_type=code&amp;scope=basic+public_content+follower_list+comments+relationships+likes</string>
+    <string name="auth_access_token_url">https://api.instagram.com/oauth/access_token</string>
+    <string name="auth_redirect_uri">https://zayz.me</string>
+    <string name="auth_client_id">2b35a81d617a4e64b9a2ed14792c38ab</string>
+    <string name="auth_client_secret">53d389a1be9f4e25a12251737892a032</string>
+    <string name="auth_access_token">access_token</string>
+
+</resources>
