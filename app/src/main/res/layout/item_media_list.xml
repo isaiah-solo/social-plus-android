@@ -41,9 +41,10 @@
             android:id="@+id/comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/likes"
-            android:layout_alignStart="@+id/likes"
-            android:layout_below="@+id/likes"
+            android:layout_toRightOf="@+id/likes"
+            android:layout_toEndOf="@+id/likes"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:text='@{String.valueOf(item.commentsCount) + " comments"}'
             android:textColor="@color/colorText"
             android:textSize="14sp" />
@@ -52,9 +53,9 @@
             android:id="@+id/tags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/comments"
-            android:layout_alignStart="@+id/comments"
-            android:layout_below="@+id/comments"
+            android:layout_alignLeft="@+id/likes"
+            android:layout_alignStart="@+id/likes"
+            android:layout_below="@+id/likes"
             android:text='@{item.getLineTags()}'
             android:textColor="@color/colorFadedText"
             android:textSize="14sp" />
