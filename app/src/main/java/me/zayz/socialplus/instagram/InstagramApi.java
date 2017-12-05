@@ -74,7 +74,7 @@ class InstagramApi {
      */
     void getImage(String url, Response.Listener<Bitmap> listener, Response.ErrorListener error) {
 
-        ImageRequest request = new ImageRequest(url, listener, 80, 80,
+        ImageRequest request = new ImageRequest(url, listener, 1080, 1080,
                 ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565, error);
 
         mQueue.add(request);
