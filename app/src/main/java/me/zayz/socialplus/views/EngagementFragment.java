@@ -59,7 +59,7 @@ public class EngagementFragment extends Fragment {
         ListView listView = mBinding.list;
 
         final EngagementListAdapter adapter = new EngagementListAdapter(getActivity(),
-                mCallback.getInstagram().engagement);
+                mCallback.getInstagram().user.engagement);
 
         listView.setAdapter(adapter);
 
@@ -102,17 +102,17 @@ public class EngagementFragment extends Fragment {
             case "best_photo":
                 b.putString("title", "Best Photos");
                 b.putSerializable("data",
-                        (Serializable) mCallback.getInstagram().engagement.bestPhoto);
+                        (Serializable) mCallback.getInstagram().user.engagement.bestPhoto);
                 break;
             case "best_video":
                 b.putString("title", "Best Videos");
                 b.putSerializable("data",
-                        (Serializable) mCallback.getInstagram().engagement.bestVideo);
+                        (Serializable) mCallback.getInstagram().user.engagement.bestVideo);
                 break;
             case "least_comments":
                 b.putString("title", "Least Commented Posts");
                 b.putSerializable("data",
-                        (Serializable) mCallback.getInstagram().engagement.leastComments);
+                        (Serializable) mCallback.getInstagram().user.engagement.leastComments);
                 break;
         }
 

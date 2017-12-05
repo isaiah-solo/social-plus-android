@@ -30,7 +30,7 @@ public class InstagramProfile implements Serializable {
     public Boolean isBusiness;
     public String accessToken;
 
-    InstagramProfile() {
+    public InstagramProfile() {
     }
 
     public InstagramProfile(DataSnapshot profileData) {

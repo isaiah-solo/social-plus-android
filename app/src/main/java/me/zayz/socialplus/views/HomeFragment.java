@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment {
         mBinding.mutual.itemTitle.setText(R.string.item_followings_mutual);
         //mBinding.blocked.itemTitle.setText(R.string.item_followings_blocked);
 
-        final InstagramStats stats = mCallback.getInstagram().stats;
+        final InstagramStats stats = mCallback.getInstagram().user.stats;
 
         mBinding.unfollowers.itemNewValue.setText(
                 String.valueOf(stats.newUnfollowers.size()));

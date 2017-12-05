@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCallback 
         mInstagram = new Instagram(this, new Instagram.InstagramAuthListener() {
 
             @Override
-            public void onSuccess(SocialPlusUser user, InstagramUser instagramUser) {
+            public void onSuccess() {
 
                 mInstagram.getStats(new InstagramStats.Callback() {
 

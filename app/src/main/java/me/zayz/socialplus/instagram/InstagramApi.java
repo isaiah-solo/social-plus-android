@@ -30,7 +30,7 @@ import me.zayz.socialplus.models.InstagramMedia;
 import me.zayz.socialplus.models.InstagramProfile;
 import me.zayz.socialplus.models.InstagramPublicUser;
 import me.zayz.socialplus.models.InstagramUser;
-import me.zayz.socialplus.models.SocialPlusUser;
+import me.zayz.socialplus.utils.RequestUtil;
 
 /**
  * Created by zayz on 10/10/17.
@@ -80,78 +80,42 @@ class InstagramApi {
         mQueue.add(request);
     }
 
-    /*
-    void checkUserBlocked(final InstagramPublicUser user, final String accessToken,
-                          final CheckUserCallback callback) {
-
-        get(API_URL + USER + user.id + RELATIONSHIP + PARAM_ACCESS_TOKEN + accessToken,
-                new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String response) {
-                        callback.onError(user);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        try {
-                            JSONObject obj = new JSONObject(new String(
-                                    error.networkResponse.data));
-                            JSONObject meta = obj.getJSONObject("meta");
-
-                            String errorType = meta.getString("error_type");
-
-                            if (errorType.equals("APINotAllowedError")) {
-                                callback.onFinish(user);
-                            }
-
-                        } catch (JSONException je1) {
-
-                            Log.e("Followed By", "Error");
-                            callback.onFinish(user);
-                        }
-                    }
-                }
-        );
-    }
-    */
-
     /**
      * Gets own user data.
      *
      * @param callback Callback for when request is finished
      */
-    void getSelf(final String accessToken, final SocialPlusUserCallback callback) {
+    void getSelf(final String accessToken, final Callback callback) {
 
-        final SocialPlusUser socialPlusUser = new SocialPlusUser();
         final InstagramUser instagramUser = new InstagramUser();
 
-        get(API_URL + SELF + PARAM_ACCESS_TOKEN + accessToken,
-                new Response.Listener<String>() {
+        String url = API_URL + SELF + PARAM_ACCESS_TOKEN + accessToken;
+
+        RequestUtil.get(mQueue, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+
+                        final InstagramProfile profile = new InstagramProfile();
 
                         try {
                             JSONObject obj = new JSONObject(response);
                             JSONObject data = (JSONObject) obj.get("data");
 
-                            socialPlusUser.profile.accessToken = accessToken;
+                            profile.accessToken = accessToken;
 
-                            socialPlusUser.profile.id = data.getString(
+                            profile.id = data.getString(
                                     InstagramProfile.ID);
-                            socialPlusUser.profile.username = data.getString(
+                            profile.username = data.getString(
                                     InstagramProfile.USERNAME);
-                            socialPlusUser.profile.profilePicture = data.getString(
+                            profile.profilePicture = data.getString(
                                     InstagramProfile.PROFILE_PICTURE);
-                            socialPlusUser.profile.fullName = data.getString(
+                            profile.fullName = data.getString(
                                     InstagramProfile.FULL_NAME);
-                            socialPlusUser.profile.bio = data.getString(
+                            profile.bio = data.getString(
                                     InstagramProfile.BIO);
-                            socialPlusUser.profile.website = data.getString(
+                            profile.website = data.getString(
                                     InstagramProfile.WEBSITE);
-                            socialPlusUser.profile.isBusiness = data.getBoolean(
+                            profile.isBusiness = data.getBoolean(
                                     InstagramProfile.IS_BUSINESS);
 
                         } catch (JSONException je) {
@@ -190,7 +154,7 @@ class InstagramApi {
                                     @Override
                                     public void run() {
 
-                                        callback.onFinish(socialPlusUser, instagramUser);
+                                        callback.onFinish(profile, instagramUser);
                                     }
                                 });
                             }
@@ -230,8 +194,9 @@ class InstagramApi {
     private void getMedia(final InstagramUser instagramUser, String accessToken,
                           final CountDownLatch latch) {
 
-        get(API_URL + SELF + RECENT_MEDIA + PARAM_ACCESS_TOKEN + accessToken,
-                new Response.Listener<String>() {
+        String url = API_URL + SELF + RECENT_MEDIA + PARAM_ACCESS_TOKEN + accessToken;
+
+        RequestUtil.get(mQueue, url, new Response.Listener<String>() {
 
                     @Override
                     public void onResponse(String response) {
@@ -268,7 +233,8 @@ class InstagramApi {
                                     tags.add(tag);
                                 }
 
-                                JSONArray usersInPhoto = media.getJSONArray("users_in_photo");
+                                JSONArray usersInPhoto = media.getJSONArray(
+                                        "users_in_photo");
                                 List<InstagramPublicUser> users = new ArrayList<>();
                                 for (int j = 0; j < usersInPhoto.length(); j++) {
                                     JSONObject userInPhoto = usersInPhoto.getJSONObject(j);
@@ -287,8 +253,8 @@ class InstagramApi {
                                 }
 
                                 instagramUser.media.add(new InstagramMedia(
-                                        id, isVideo, image, likesCount, commentsCount, createdTime,
-                                        tags, users, link
+                                        id, isVideo, image, likesCount, commentsCount,
+                                        createdTime, tags, users, link
                                 ));
                             }
                         } catch (JSONException je) {
@@ -317,8 +283,9 @@ class InstagramApi {
     private void getFollows(final InstagramUser instagramUser, String accessToken,
                             final CountDownLatch latch) {
 
-        get(API_URL + SELF + FOLLOWS + PARAM_ACCESS_TOKEN + accessToken,
-                new Response.Listener<String>() {
+        String url = API_URL + SELF + FOLLOWS + PARAM_ACCESS_TOKEN + accessToken;
+
+        RequestUtil.get(mQueue, url, new Response.Listener<String>() {
 
                     @Override
                     public void onResponse(String response) {
@@ -368,7 +335,9 @@ class InstagramApi {
     private void getFollowedBy(final InstagramUser instagramUser, String accessToken,
                                final CountDownLatch latch) {
 
-        get(API_URL + SELF + FOLLOWED_BY + PARAM_ACCESS_TOKEN + accessToken,
+        String url = API_URL + SELF + FOLLOWED_BY + PARAM_ACCESS_TOKEN + accessToken;
+
+        RequestUtil.get(mQueue, url,
                 new Response.Listener<String>() {
 
                     @Override
@@ -412,51 +381,11 @@ class InstagramApi {
     }
 
     /**
-     * Helper function for getUser requests on Volley.
-     *
-     * @param uri      Uri to make the request to
-     * @param response Response callback
-     * @param error    Error callback
-     */
-    private void get(String uri, Response.Listener<String> response,
-                     Response.ErrorListener error) {
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response,
-                error);
-
-        mQueue.add(stringRequest);
-    }
-
-    /**
-     * Helper function for post requests on Volley.
-     *
-     * @param uri      Uri to make the request to
-     * @param formData Form data parameters to post
-     * @param response Response callback
-     * @param error    Error callback
-     */
-    private void post(String uri, final Map<String, String> formData,
-                      Response.Listener<String> response, Response.ErrorListener error) {
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, uri, response,
-                error) {
-
-            @Override
-            protected Map<String, String> getParams() {
-
-                return formData;
-            }
-        };
-
-        mQueue.add(stringRequest);
-    }
-
-    /**
      * Callback interface to return user after request.
      */
-    public interface SocialPlusUserCallback {
+    public interface Callback {
 
-        void onFinish(SocialPlusUser socialPlusUser, InstagramUser currentInstagramUser);
+        void onFinish(InstagramProfile profile, InstagramUser currentInstagramUser);
 
         void onError();
     }

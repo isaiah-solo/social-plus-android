@@ -5,9 +5,6 @@ import android.graphics.Bitmap;
 
 import com.android.volley.Response;
 
-import me.zayz.socialplus.R;
-import me.zayz.socialplus.config.Config;
-import me.zayz.socialplus.models.InstagramEngagement;
 import me.zayz.socialplus.models.InstagramProfile;
 import me.zayz.socialplus.models.InstagramStats;
 import me.zayz.socialplus.models.InstagramUser;
@@ -20,8 +17,6 @@ import me.zayz.socialplus.models.SocialPlusUser;
  */
 public class Instagram {
 
-    public InstagramStats stats;
-    public InstagramEngagement engagement;
     public SocialPlusUser user;
 
     private InstagramDialog mDialog;
@@ -40,37 +35,16 @@ public class Instagram {
         mSession = new InstagramSession(context);
         mListener = listener;
         mApi = new InstagramApi(context);
+        mCurrentUser = new InstagramUser();
 
-        stats = new InstagramStats();
-        engagement = new InstagramEngagement();
+        user = new SocialPlusUser();
 
         mDialog = new InstagramDialog(context, new InstagramDialog.InstagramDialogListener() {
 
             @Override
             public void onSuccess(String accessToken) {
 
-                mApi.getSelf(accessToken, new InstagramApi.SocialPlusUserCallback() {
-
-                    @Override
-                    public void onFinish(SocialPlusUser socialPlusUser,
-                                         InstagramUser instagramUser) {
-
-                        mSession.storeUser(socialPlusUser, instagramUser);
-                        mSession.storeLocal(socialPlusUser);
-
-                        user = socialPlusUser;
-                        mCurrentUser = instagramUser;
-                        mListener.onSuccess(user, mCurrentUser);
-                    }
-
-                    @Override
-                    public void onError() {
-
-                        user = new SocialPlusUser();
-                        mCurrentUser = new InstagramUser();
-                        mListener.onSuccess(user, mCurrentUser);
-                    }
-                });
+                getSelf(accessToken);
             }
 
             @Override
@@ -88,33 +62,16 @@ public class Instagram {
 
         if (mSession.isActive()) {
             mSession.getUser(new InstagramSession.Callback() {
+
                 @Override
-                public void onFinish(InstagramProfile profile, InstagramUser prevUser,
-                                     InstagramStats userStats, InstagramEngagement engagement) {
-                    mApi.getSelf(profile.accessToken, new InstagramApi.SocialPlusUserCallback() {
+                public void onFinish(SocialPlusUser socialPlusUser) {
 
-                        @Override
-                        public void onFinish(SocialPlusUser socialPlusUser,
-                                             InstagramUser instagramUser) {
-
-                            user = socialPlusUser;
-                            mCurrentUser = instagramUser;
-                            mListener.onSuccess(user, mCurrentUser);
-                        }
-
-                        @Override
-                        public void onError() {
-
-                            user = new SocialPlusUser();
-                            mCurrentUser = new InstagramUser();
-                            mListener.onSuccess(user, mCurrentUser);
-                        }
-                    });
+                    user = socialPlusUser;
+                    getSelf(user.profile.accessToken);
                 }
 
                 @Override
                 public void onNotExists() {
-
                 }
             });
         } else {
@@ -131,6 +88,7 @@ public class Instagram {
      */
     public void getImage(String url, Response.Listener<Bitmap> listener,
                          Response.ErrorListener error) {
+
         mApi.getImage(url, listener, error);
     }
 
@@ -150,37 +108,25 @@ public class Instagram {
         mSession.getUser(new InstagramSession.Callback() {
 
             @Override
-            public void onFinish(InstagramProfile profile, InstagramUser prevUser, InstagramStats userStats,
-                                 InstagramEngagement userEngagement) {
+            public void onFinish(SocialPlusUser socialPlusUser) {
 
-                userStats.calculateStats(mCurrentUser, prevUser);
-                userEngagement.calculateEngagement(mCurrentUser);
+                user.stats.calculateStats(mCurrentUser, user.previousUser);
+                user.engagement.calculateEngagement(mCurrentUser);
 
-                stats = userStats;
-                engagement = userEngagement;
-
-                mSession.updateStats(profile, userStats, user, mCurrentUser);
-
-                /*
-                CountDownLatch latch = new CountDownLatch(stats.all.size());
-
-                InstagramApi.BlockedAsyncTask blockCheck =
-                        new InstagramApi.BlockedAsyncTask(mApi, stats, profile, stats.all, latch);
-                Log.e("TEST", "Before background task");
-                blockCheck.execute();
-                try {
-                    latch.await(10, TimeUnit.SECONDS);
-                } catch (InterruptedException e) {
-                    Log.e("TEST", "Fail");
-                }
-                */
-
+                mSession.updateStats(user, mCurrentUser);
 
                 callback.onFinish();
             }
 
             @Override
             public void onNotExists() {
+
+                user.stats.calculateStats(mCurrentUser, mCurrentUser);
+                user.engagement.calculateEngagement(mCurrentUser);
+
+                mSession.updateStats(user, mCurrentUser);
+
+                callback.onFinish();
             }
         });
     }
@@ -194,11 +140,39 @@ public class Instagram {
     }
 
     /**
+     * Gets user from Instagram using access token.
+     *
+     * @param accessToken Access token
+     */
+    private void getSelf(String accessToken) {
+        mApi.getSelf(accessToken, new InstagramApi.Callback() {
+
+            @Override
+            public void onFinish(InstagramProfile profile,
+                                 InstagramUser instagramUser) {
+
+                mSession.storeLocal(profile.id);
+
+                user.profile = profile;
+
+                mCurrentUser = instagramUser;
+                mListener.onSuccess();
+            }
+
+            @Override
+            public void onError() {
+
+                mListener.onSuccess();
+            }
+        });
+    }
+
+    /**
      * Callback interface to check if authorization was successful.
      */
     public interface InstagramAuthListener {
 
-        void onSuccess(SocialPlusUser user, InstagramUser instagramUser);
+        void onSuccess();
 
         void onNeedLogin();
 
